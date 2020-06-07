@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SbcacheApplication {
 
 	public static void main(String[] args) {
-		System.out.println("hello there again");
+		System.out.println("hello there again and again");
 	}
 
 }
