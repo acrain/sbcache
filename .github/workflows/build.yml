@@ -19,10 +19,7 @@ jobs:
       - name: Package .jar
         run: mvn -B clean package
 
-      - name: Build image
-        run: docker build -t apcrain/sbcache .
-
-      - name: Push
+      - name: Build and push
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
