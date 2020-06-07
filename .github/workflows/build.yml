@@ -29,6 +29,7 @@ jobs:
 
       - name: Build and tag image
         run: >
+          DOCKER_BUILDKIT=1
           docker build
           --cache-from ${{ env.IMAGE_NAME }}
           -t ${{ env.IMAGE_NAME }}:latest
