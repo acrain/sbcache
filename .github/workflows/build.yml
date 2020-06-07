@@ -19,6 +19,9 @@ jobs:
       - name: Package .jar
         run: mvn -B clean package
 
+      - name: Unpack .jar
+        run: mkdir -p target/unpacked && unzip target/*.jar -d target/unpacked
+
       - name: Build and push
         uses: docker/build-push-action@v1
         with:
