@@ -1,14 +1,14 @@
-name: package + build fat jar
+name: package + build layered (manual)
 on:
   push:
     branches: [ master ]
 env:
-  IMAGE_NAME: apcrain/sbcache-fat-jar
+  IMAGE_NAME: apcrain/sbcache-layered-manual
 
 jobs:
 
   build:
-    name: package + build fat jar
+    name: package + build layered (manual)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,13 +21,16 @@ jobs:
       - name: Package .jar
         run: mvn -B clean package
 
+      - name: Unpack .jar
+        run: mkdir -p target/unpacked && unzip target/*.jar -d target/unpacked
+
       - name: Login docker
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Build and tag image
         run: >
           docker build
-          -f Dockerfile.fat-jar
+          -f Dockerfile.layered-manual
           -t ${{ env.IMAGE_NAME }}:latest
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }}
           .
