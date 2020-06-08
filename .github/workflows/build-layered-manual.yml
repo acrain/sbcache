@@ -29,10 +29,12 @@ jobs:
 
       - name: Build and tag image
         run: >
+          DOCKER_BUILDKIT=1
           docker build
-          -f Dockerfile.layered-manual
+          --cache-from ${{ env.IMAGE_NAME }}
           -t ${{ env.IMAGE_NAME }}:latest
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          --build-arg BUILDKIT_INLINE_CACHE=1
           .
 
       - name: Push latest-tagged
