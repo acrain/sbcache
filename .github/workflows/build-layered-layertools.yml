@@ -1,14 +1,14 @@
-name: package + build layered (manual)
+name: package + build layered (layertools)
 on:
   push:
     branches: [ master ]
 env:
-  IMAGE_NAME: apcrain/sbcache-layered-manual
+  IMAGE_NAME: apcrain/sbcache-layered-layertools
 
 jobs:
 
   build:
-    name: package + build layered (manual)
+    name: package + build layered (layertools)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,8 +21,8 @@ jobs:
       - name: Package .jar
         run: mvn -B clean package
 
-      - name: Unpack .jar
-        run: mkdir -p target/unpacked && unzip target/*.jar -d target/unpacked
+      - name: Extract layers via layertools
+        run: java -Djarmode=layertools -jar target/*.jar extract
 
       - name: Login docker
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -31,7 +31,7 @@ jobs:
         run: >
           DOCKER_BUILDKIT=1
           docker build
-          -f Dockerfile.layered-manual
+          -f Dockerfile.layered-layertools
           --cache-from ${{ env.IMAGE_NAME }}
           -t ${{ env.IMAGE_NAME }}:latest
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }}
