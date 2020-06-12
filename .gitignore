@@ -4,6 +4,13 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+.DS_Store
+
+# spring-boot-maven-plugin layers
+application/
+dependencies/
+spring-boot-loader/
+
 ### STS ###
 .apt_generated
 .classpath
